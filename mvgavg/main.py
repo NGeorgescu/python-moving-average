@@ -1,6 +1,6 @@
 import numpy as np
 
-from mvgavg import fnjn_mvgavg, cumsum_mvgavg, binning_mvgavg
+from .mvgavg import fnjn_mvgavg, cumsum_mvgavg, binning_mvgavg
 
 def mvgavg(a, n, axis=0, weights=False, binning=False):
     """
