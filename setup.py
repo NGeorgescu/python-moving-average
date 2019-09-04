@@ -9,7 +9,8 @@ setup(name='mvgavg',
     long_description=open('README.rst').read(),
     license='see LICENSE.txt',
     keywords="mvgavg moving average movingaverage numpy python binning binned running run",
-    install_requires=['numpy']
+    install_requires=['numpy'],
     packages= find_packages())
+
 
 
