@@ -5,10 +5,9 @@ python-moving-average
 Why??
 ------
 Numpy does not include a built-in moving average function as of yet.  
-Most solutions are tedious and complicated. This solution is very nice.
+Most solutions are tedious and complicated and not one liners.
 This operates similar to the Wolfram Language's `MovingAverage[]` function, but
-has the advantage that it can specify axis (Wolfram gets away with `f[#]&/@`, 
-but that's a story for another day). 
+has the advantage that it can specify axis for higher ndim arrays.
 
 Usage
 ------
@@ -31,22 +30,19 @@ along `axis=0` (the default) will give you back the moving average of all t's
 along side all x's.
 
 The output is a vector that is the same size and shape but has been shortened
-on the `axis` axis by a length of `n-1`.
+on the `axis` axis by a length of `n-1`, unless `binning=True` (see below).
+
+The structure of this code is that it runs a cumulative sum moving average if there
+is no weights or binning, as this is the fastest moving average typically,
+especially for wide or high `ndim` arrays.  On the other hand, if either weights
+or binning is used, the appropriate function is selected.
+
 
 Axis and Weight Options
 ------------------------
 Axis: The axis lets you operate at an increased depth, so using the `axis=1`
 parameter, you can operate horizontally across columns with your moving average.
 You can do this as deep as the array itself.
-
-Weights allow you to customize the function.  The default weight (None) is 
-described above (all values are given the same weight).  One other weight 
-you can use is `'pascal'`. This gives a nth-line pascal's triangle weight, 
-so for instance, for `n = 5`, the `ith` item in the array is 
-`(i + 4j + 6k + 4l + m) / 16`, since the 5th line in pascal's triangle is
-[1,4,6,4,1].  The other default weight options are `triangle` (i.e. 
-`triangle(5)=[1,2,3,2,1]`, and quadratic is triangle squared. Or make your own 
-list and put whatever you want in here (make sure `len(weights) == n`)
 
 Binning
 -------
@@ -63,7 +59,7 @@ for an input array [a b c d e f...] and an output [A B C D E F...] over distance
         E =         [e f g]/3
         ....
 
-but if binning = True: ::
+but if `binning = True`: ::
 
         A = [a b c]/3
         B =       [d e f]/3
