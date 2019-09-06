@@ -17,7 +17,7 @@ def mvgavg(a, n, axis=0, weights=False, binning=False):
     weights: 'pascal', 'triangle', 'quadratic', or a list
         weights to multiply the moving average by
     binning:
-        Bins the values rather than 
+        Bins the values within the moving window together and moves on to the next
 
     Returns
     -------
@@ -41,17 +41,10 @@ def mvgavg(a, n, axis=0, weights=False, binning=False):
     as it goes. This function will sometimes fail for a ragged array.  Use a list
     comprehension with np.mvgavg embedded in it instead.
 
-    If you have any doubts of how a moving average works, try it out with an array of
-    symbols in sympy.
-
-    axis
-    -----
     The axis parameter controls the axis over which the moving average happens. In a
     2D array, for instance, for axis=0, the array will average along the columns, and
     axis=1 will average along the rows.
 
-    Binning vs Unbinned
-    --------------------
     Consider the array [a b c d e... ] that is being averaged to the product array,
     [A B C D... ] over a distance of 3. If binning = False:
 
@@ -75,7 +68,6 @@ def mvgavg(a, n, axis=0, weights=False, binning=False):
     Examples
     --------
     >>> from mvgavg import mvgavg
-    >>> 
     >>> example_array=[[i,(-1)**i] for i in np.arange(5)]
     >>> mvgavg(example_array,2)
     array([[0.5, 0. ],

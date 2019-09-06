@@ -14,23 +14,10 @@ def sliding_window_view(arr, shape):
     new_strides = np.concatenate((strides, strides), axis=0)
     return np.lib.stride_tricks.as_strided(arr ,new_shape, new_strides)
 
-def pascal(n):
-    """returns the nth line of a pascal's triangle"""
-    return np.array([1]) if n == 1 else np.array([0,*pascal(n-1)])+np.array([*pascal(n-1),0])
-
-def triangle(n):
-    return np.array([*range(1,int((n+2)/2))]+[*range(int((n+1)/2),0,-1)])
-
-def quadratic(n):
-    return triangle(n)**2
-
 def fnjn_mvgavg(a, n, axis=0, weights=None):
     shape = a.shape-(n-1)*np.eye(a.ndim,dtype='int')[axis]
     window = sliding_window_view(a, shape)
     if weights:
-        if weights == 'pascal': weights = pascal(n)
-        elif weights == 'triangle': weights = triangle(n)
-        elif weights == 'quadratic': weights = quadratic(n)
         window = window.swapaxes(0,axis)
         assert len(window)==len(weights)
         window=np.array([window[n]*weights[n] for n in range(len(weights))])/np.sum(weights)
@@ -40,9 +27,9 @@ def fnjn_mvgavg(a, n, axis=0, weights=None):
 
 def cumsum_mvgavg(a, n, axis=0):
     table = np.cumsum(a.swapaxes(0,axis),axis=0)/n
-    try:
+    if isinstance(table,list):
         table = np.vstack([[0*table[0]],table])
-    except:
+    else:
         table = np.array([0,*table])
     return np.swapaxes(table[n:]-table[:-n],0,axis)
 
