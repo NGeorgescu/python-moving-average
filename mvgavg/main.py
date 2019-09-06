@@ -22,31 +22,33 @@ def mvgavg(a, n, axis=0, weights=False, binning=False):
     Returns
     -------
     mvgavg : nd_array
-        An array with the elements averaged over a length of n.  The array will be
-        of a length n-1 shorter than the original along the chosen axis, unless 
-        binning=True, in which case it will return an array n times shorter along
+        An array with the elements averaged over a length of `n`.  The array will be
+        of a length `n-1` shorter than the original along the chosen axis, unless 
+        `binning=True`, in which case it will return an array `n` times shorter along
         the chosen axis.
     
     See Also
     --------
-    ndarray.mean : equivalent to setting n equal to the length of data along
+    ndarray.average : equivalent to setting n equal to the length of data along
         the specified axis
+    pandas.DataFrame.rolling : provides a rolling window calculation in pandas
+    
 
     Notes
     -----
-    Consider the list [a, b, c, d, e....] with a moving average of length 3.  The
-    First element in the list will be (a+b+c)/3.  The next (b+c+d)/3.  And so on.
+    Consider the list `[a, b, c, d, e....]` with a moving average of length 3.  The
+    First element in the list will be `(a+b+c)/3`.  The next `(b+c+d)/3`.  And so on.
     The result is a smoothed version of the original data with length (n-1) shorther
     than the original data.  This works with arrays of any dimension, summing along
     as it goes. This function will sometimes fail for a ragged array.  Use a list
     comprehension with np.mvgavg embedded in it instead.
 
     The axis parameter controls the axis over which the moving average happens. In a
-    2D array, for instance, for axis=0, the array will average along the columns, and
+    2D array, for instance, for `axis=0`, the array will average along the columns, and
     axis=1 will average along the rows.
 
-    Consider the array [a b c d e... ] that is being averaged to the product array,
-    [A B C D... ] over a distance of 3. If binning = False:
+    Consider the array `[a b c d e... ]` that is being averaged to the product array,
+    `[A B C D... ]` over a distance of 3. If `binning = False`: ::
 
         A = [a b c]/3
         B =   [b c d]/3
@@ -54,27 +56,27 @@ def mvgavg(a, n, axis=0, weights=False, binning=False):
         D =       [d e f]/3
         ....
 
-    but if binning = True:
+    but if `binning = True`: ::
 
         A = [a b c]/3
         B =       [d e f]/3
         C =             [g h i]/3
         .....
 
-    Thus, a binned moving average decreases the array length by a factor of n. This
+    Thus, a binned moving average decreases the array length by a factor of `n`. This
     throws out some precision but greatly decreases computational time for very 
     long arrays.
 
     Examples
     --------
     >>> from mvgavg import mvgavg
-    >>> example_array=[[i,(-1)**i] for i in np.arange(5)]
-    >>> mvgavg(example_array,2)
+    >>> x = [[i,(-1)**i] for i in np.arange(5)]
+    >>> mvgavg(x,2)
     array([[0.5, 0. ],
            [1.5, 0. ],
            [2.5, 0. ],
            [3.5, 0. ]])
-    >>> mvgavg(example_array,2,axis=1)
+    >>> mvgavg(x,2,axis=1)
     array([[0.5],
            [0. ],
            [1.5],

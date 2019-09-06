@@ -27,7 +27,7 @@ def fnjn_mvgavg(a, n, axis=0, weights=None):
 
 def cumsum_mvgavg(a, n, axis=0):
     table = np.cumsum(a.swapaxes(0,axis),axis=0)/n
-    if isinstance(table,list):
+    if table.ndim > 1:
         table = np.vstack([[0*table[0]],table])
     else:
         table = np.array([0,*table])
